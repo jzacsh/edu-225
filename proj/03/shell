@@ -1,0 +1,180 @@
+#!/bin/bash
+
+# change these to your pref:
+opt_verbose=1  #verbose mode
+opt_dbg=1      #debugging mode
+############################
+
+# basic utils: #######################################
+die() {
+  (( $# > 0 )) && exit ${1} || exit 1
+}
+
+err() {
+  echo -e ":: [error] :: ${@}" 1>&2
+}
+
+debug() {
+  (( $opt_dbg != 0 )) || return
+  echo -e ":: DEBUG: ${@}"
+}
+
+verb() {
+  ifverb || return
+  echo -e ":: ${@}"
+}
+
+ifverb() {
+  (( $opt_verbose != 0 )) && return 0
+  return 1
+}
+
+usage() {
+  echo "usage: $0
+    This is an interactive file modification program.
+    Possible return codes:
+      0: success
+      1: user-error
+      2: parameters error
+      3: failed (ie.: debug option)"
+}
+
+# check output/error
+check() {
+  #for readability:
+  ec=$1
+  shift
+  out=$@
+
+  if (( $ec != 0)); then
+    err "previous cmd failed exit status: ${ec}, error:\n\t${out}"
+    die 1
+  fi
+}
+
+workarea() {
+  mess=$(whoami)
+  printf "\nplease choose a working area [ ./$mess ]: "; read in
+  [[ -z $in ]] || mess=$in
+  if [[ ! -w $(dirname $mess) ]];then
+    err "You do not have write access to $mess"
+    die 1
+  fi
+  local tmpf=$(mktemp)
+  debug "tmp file created: ${tmpf}"
+  verb "creating working directory..."
+  ifverb && local prm='v'
+  debug "about to run: mkdir -p$prm $mess 2>&1 > $tmpf"
+  mkdir -p$prm $mess 2>&1 > $tmpf
+  check $? $(cat $tmpf)
+  verb "changing to new working directory..."
+  local tmpf=$(mktemp)
+  debug "tmp file created: ${tmpf}"
+  cd $mess 2>&1 > $tmpf
+  check $? $(cat $tmpf)
+  debug "current working directory is: $(pwd)"
+}
+
+menu_print() {
+  printf "\nchoose an action:\n"
+  printf "%d: change permissions\n" 1
+  printf "%d: copy file to location\n" 2
+  printf "%d: cd to location\n" 3
+}
+
+menu() {
+  menu_print
+  printf "option: "; read opt
+  debug "it seems you just typed: ${opt}"
+
+  case "$opt" in
+    1)
+      op_chg_stat
+      ;;
+    2)
+      op_cp_file
+      ;;
+    3)
+      op_chg_loc
+      ;;
+    *) 
+      err "invalid menu option: ${opt}"
+      die 1
+      ;;
+  esac
+}
+
+# tools: #############################################
+
+#`chmod` a file
+op_chg_stat() {
+  printf "which file would you like to change permissions to?\n"
+  printf "path: "; read file
+  verb "curent permssions are:\t"
+  stat -c '%A (%a)' $file
+  if (( $? != 0 )); then
+    debug "previous command, stat, exited with $?"
+    err '`stat` exited early (see above). Escaping to menu.'
+    return
+  fi
+  printf "what would you like permissions to be?\n"
+  printf "permissions: "; read perms
+  local tmpf=$(mktemp)
+  debug "tmp file created: ${tmpf}"
+  ifverb && local prm='-c'
+  chmod $prm $perms $file 2> $tmpf
+  check $? $(cat $tmpf)
+  verb "new permssions are:\t"
+  stat -c '%A (%a)' $file
+}
+
+#`cp` to a file
+op_cp_file() {
+  printf "which file would you like to copy?\n"
+  printf "path: "; read orig
+  printf "where would you like to copy it to?\n"
+  printf "path: "; read newf
+  if [[ -d $newf ]]; then
+    origf=$(basename $orig)
+    newf="$newf/$origf"
+    debug "seems you're implying a 'dest' of: $newf"
+  fi
+  local tmpf=$(mktemp)
+  debug "tmp file created: ${tmpf}"
+  ifverb && local prm='-v'
+  debug "paramter passed is (\$prm): $prm"
+  debug "about to run \`cp $prm $orig $newf\`"
+  cp $prm $orig $newf 2> $tmpf
+  check $? $(cat $tmpf)
+  verb "diff -u $orig $newf:\n"
+  ifverb && diff -u $orig $newf
+}
+
+#cd to a file
+op_chg_loc() {
+  verb "current working directory is:\n\t$(pwd)"
+  printf "where would you like to go?\n"
+  printf "new dir: "; read new
+  local tmpf=$(mktemp)
+  debug "tmp file created: ${tmpf}"
+  cd $new 2>&1 > $tmpf
+  check $? $(cat $tmpf)
+  verb "new working directory is:\n\t$(pwd)"
+}
+
+# prog structure: ####################################
+
+debug "you called with $# options. option 0 was: $0"
+# sanity check:
+if (( $# > 0 )); then
+  usage 
+  die 2
+else
+  debug "you're past the param check"
+fi
+
+# run program
+workarea
+while ((0 == 0)); do
+  menu
+done

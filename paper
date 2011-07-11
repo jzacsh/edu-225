@@ -1,0 +1,33 @@
+Thesis
+  Comparison of how the three major http servers take advantage of the
+  operating system, how their approaches differ and what argument stands behind
+  each approach.
+
+  1 httpd
+      http://httpd.apache.org/
+  2 lighttpd
+      http://www.lighttpd.net/
+  3 nginx
+      http://nginx.org/
+
+Optimization (general, keep in mind):
+- How do they ensure responsiveness from OS?
+- How do (if) they utilize the TCP/IP stack differently?
+- Is there a general theme to how each is utilizing its resources (the OS)?
+
+To Dig:
+* download source for each
+  - get highlevel overview of function walk through.
+* find indications of each server's internal defaults, as basis for code
+  walk-through:
+  - read up on "optimizing"-[server]
+  - read up on benchmark comparisons
+* smerril suggestions:
+  - apache vs nginx
+    - threaded vs event-based
+    - read: c10k challenge
+
+* threaded response "thread pool" -- see ./notes/0923 section: "combined-level
+  threads"
+    --  is this taking advantage of an "asynchronous" signal, as opposed to
+    "synchronous" signal?

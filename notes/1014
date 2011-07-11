@@ -1,0 +1,60 @@
+real storage
+  read chp10 p413-466
+  hand-in lab1
+
+memory:
+  primary
+  - "real"
+  - main
+  - physical
+  - "core"
+    [ artifact magnetic from old cylinder-based storage ]
+  secondary
+  - magnetic disk
+  - optical disk
+  - magnetic tape disk
+
+hierarchies:
+  cache > primary > secondary
+  (speed -> whaoo ->   OMGGG)
+
+management stratgies:
+  ( relative to processor )
+  - fetch
+    when to move data main <-> secondary
+  - placement
+    how to move data into main
+  - replacement
+    when to move out of main, replace w/new, why
+
+contiguous vs noncontiguous
+---- memory allocation ----
+  - contiguous
+    - single user, like CP/M
+    - may have replacement strategy, eg: overlays
+    - may/may not have memory protection
+  - noncontiguous
+    - single/multi user
+    - many types, eg.: partitions, paging, etc.
+    - eg, partitions may be fixed or variable
+
+    offset/limit
+
+multi user/multi programming
+---- environments ----------
+  - fixed partitions
+    - split memory, pick one to run N progs
+    - may have mem.protection
+  - variable partitions
+    - dynamically determina partition sizes
+    - can lead to fragmentation
+    - OS uses memory compaction or garbage collection
+    - may have mem.protection
+
+memory placement stratgies
+  - first-fit
+    stick prog in first hole
+  - best-fit
+    go through mem./ find smallest possible
+  - worst-fit
+    find big hole, fill partically, leave rest of hole

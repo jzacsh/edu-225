@@ -1,0 +1,26 @@
+study exam1
+continue term-paper/presentation
+for 10/14 read deitel chap9 pg 377-399
+xcred: chp 8 pg333-365
+
+indefinite postponement:
+  dead lock (two processes waiting forever)
+
+  solutions:
+    round-robin, one at a time
+
+  Banker's algorithm
+    
+
+* sharing = caring
+
+  deadlock recovery
+  - preemption
+  - field-process
+    - take an already allocated resource away from a process and give it to
+      another
+  - checkpoint/rollback
+    - snapshots of state /ea process
+    - rollback, allocating differently
+  - kill process
+    - simplest, crudest

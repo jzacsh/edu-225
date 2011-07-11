@@ -1,0 +1,111 @@
+Chapter 4 - thread concepts
+(substitute professor)
+
+objectives:
+- reason for creating threads
+- smiliatries: process vs threads
+- various levels of support
+- life cycle of thread
+- thread signaling/cancelling
+
+
+q: how to write in c/c++ for multithreading?
+
+q: advantages multi-thread 
+a: multi threads of apps
+
+- spins of an individual process
+  thread: LWP lightweight process
+
+* lack of std library for multi-threading
+
+BONUS:
++ thread handling does not require OS to initialize resources, as they are
+  shared amongst parent processes and its threads
++ IPC is easy, as threads communicate through shared space of parent process
++ thread does not take processor clock timing.
+
+Life Cycle:
+- born
+- ready
+- running
+- dead
+- sleeping
+- waiting
+- blocked
+
+preemption: running > ready
+  thread prepared ahead of time (eg.: just before IO op. finishes)
+  dict:
+    a prior appropriation of something; "the preemption of bandwidth by
+    commercial interests"
+
+sleeping vs blocked
+  sleeping : waiting another process or anything arbitrary
+  blocked  : waiting on OS to finish (eg.: IO)
+
+Operations:
+  cancel:
+    - indicates thread should be terminated - not guaranteed that thread will
+      terminate
+    - threads can mask cancel signal (but not abort)
+  join  : 
+    - joining thread blocks until the thread it joined exits
+
+q: less processor cycles, why?
+a: does not require processor resources to initialize global vars.
+
+user-level threads
+  - does not have access to permissions user doesn't
+  - mapping: many-to-one
+  - OS treats user-level threads as single process
+  - does not takes advantage of parallel threads
+    context
+kernel-level threads
+  - more powerful
+  - takes advantage of parallel threads, allowing each thread its own
+    processessing context
+combined-level threads
+  - "worker" threads: for serving, threads are made ready as "listeners" for
+    requests ("pool" of threads). threads return to pool upon completion.
+
+signal delivery
+- synchronous  :  written as direct results of prog. execution (delivered to
+  current executing threads).
+- asynchronous :  occur upon an event - unrelated to current instruction
+
+ ** unmasked / masked threads based on relevance
+
+(many-to-many signaling issue for asynchronous threads -- perhaps a dedicated
+thread for distribution of signals)
+
+abort vs cancel
+- cancel can be blocked (masked) -- or fatal exception
+- abort can not be masked
+
+pthreads - POSIX threads -- somewhat portable API to threading
+
+
+asynchronous concurrent exec:
+* concurrent execution - two threads compete to write same shared resource of
+  parent process
+
+* mutual exclusion
+    data can be put in inconsistent state
+
+* producer/consumer relationship
+
+Dekker's Algorithm
+* lockstep synchronization (thread _has_ to run alternataly)
+* deadlock
+* indefinite postponement
+
+Peterson's Algorithm
+* simplified version of Dekker's
+
+Disabling Interrupts
+- bad idea, if responsible thread goes into blocked state (for IO), system
+  halts
+
+Semaphores
+* software construct that can be used to enforce mutual exclusion

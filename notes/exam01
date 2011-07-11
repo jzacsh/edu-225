@@ -1,0 +1,42 @@
+what did early os look like
+what did was time sharing system
+how did web get started
+various hardware combos
+how hardware ties into kernel
+different kernel arch. (ie: mono/micro)
+what is distributed system
+what is clock, memory
+bootstrap process (in book)
+different software types; compilers
+know processes:
+  - definition
+  - how they run
+  - finite state machine
+  - IPC
+  - priorities
+thread
+  - definition
+  - states
+  - synchronization
+  - P & V for operations    *
+  - semaphores invented by  *
+  - counting semaphore      *
+  - pg 231-233              *
+
+open-ended:
+
+  chp2
+  monolithic, layered and multi kernel
+
+  chp_
+  priority list, memory protection, - order, hardware
+
+  relationships
+  single-processor
+
+  thread pools
+
+  mutual exclusion (mutext)
+  binary semaphores
+
+  threadsafe : only correct in multi-threaded operation

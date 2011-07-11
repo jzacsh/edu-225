@@ -1,0 +1,48 @@
+HW DUE: 2010-09-16
+chp1,2 (1-94 pg)
+chp 3 (109-136 pg)
+
+start project-1 (translator design)
+  - have a short written description design
+  - should include questions you have
+
+
+notes:
+
+lxr.linux.no
+
+2909 bit slice
+74__81 ALU
+
+CPU's translation unit:
+* CISC
+* RISC
+
+
+project 1:
+
+LEXER SPEC:
+  - create static array of characters and lexemes and precedence
+
+  ALGORITHM:
+
+[ program 1 ]
+1  - analyzer: finite state (loop)
+2    - tokenizer: find lexemes
+3    - store lexemes: continuously build sorted array of lexeme locations (w/in
+       input array), sorted by precedence rule.
+4    - maximal munch (go until end)
+
+[ program 2 ]
+5  - evaluator: loop along input-array based on new precedence-location array
+6    - along way: pre-sized array (matching input size) of boolean values,
+       indicating whether input has been calculated or not.
+
+?  - communication?
+    - write to file (two binaries independent).
+    - lexer is one process, prog 1 and prog 2 are child processes, speaking
+      back to parent (the lexer). this allows for one binary program.
+    ? how to write two _separate_ binaries?
+?  - what about grouping? (parenthesis)
+     * sorting in "store lexemes" gives groups operations (even menial
+       operators) highest precedence

@@ -1,0 +1,104 @@
+virtual mem
+- solves problem of limited mem space
+- creates illusion of more memory
+
+- address translation
+ - combined paging & segmentation
+
+ basic concepts:
+   V   - virtual addr space
+   R   - real addr space
+   DAT - dynamic addr translation
+     ^ process of mapping:
+    "artificial contiguity"
+
+  block mapping:
+   pages:
+   - blocks fixed size
+   segments:
+   - blocks maybe of diff. sizes
+   block mapping:
+   - system represents addr. in ordered pair
+    v = (b,d)     *understand this*
+      b = block number
+      d = displacement
+        ( displacement is summed with block number for real addr. )
+
+    paging:
+    v = (p,d)
+      p = page number
+      d = displacement
+      page frame: fixed block in mem.
+      -------------------------------------
+             multiplexer         page mem:        multiplexer
+processor --> |      |   <---> |addr. data|  <-->   |     |
+v.addr    --> |      |         |          |         |     |
+      -------------------------------------
+
+    page table entry:
+    - entry for virtual page corresponding to page frame
+    - resident bit stored (if page is in memory)
+
+    direct mapping:
+    - v = (p,d)
+      - p = page number
+      - d = displacement
+        ( displacement isn't added, its displacement in _block_ )
+
+ ** page table doesn't fit in memory:
+    associative mapping:
+      - very similar but looks up 'p' based on its _content_ as the table now
+        has more room.
+
+    paging addr. translation w/ direct/associative mapping
+      compromise cost/performance
+      TLB : translation lookaside buffer
+      combine both associative and direct mapping
+
+    multilevel page tables:
+      v = (p,t,d)
+        p = page number  ( 10 bits )
+        t = translation  ( 10 bits )
+        d = displacement ( 10 bits )
+      map of maps:
+      - smaller maps to _actual_ direct mapping tables.
+
+    inverted page tables:
+    v = (p,d)
+      page number run through hash function for page-table lookup
+
+    sharing page systems:
+      - eg.: in event of forked processes
+      - sections of process are readonly (shareable)
+      implementation: file sections: BSS, DATA, TEXT
+        - bss: block started by symbol
+      implementation: linked libraries
+
+    segmentation:
+    - partitioning of memory
+    - block of prog's data and/or instructions
+    v = (s,d)
+      s = segment number
+      d = displacement
+   ----------------------------------------------
+       | r | a |  l | [p] |  s' |
+       ------------------------------------------
+       r = resident
+       a = address
+       l = segment length
+       p = protection bits
+       s = base address of segmentation
+   ----------------------------------------------
+
+    memory protection key:
+      r, w, e, a      (read, write, execute, append)
+
+    segmentation/paging systems:
+      v = (s,p,d)
+        s = segment number
+        p = page number w/in segment
+        d = displacement w/in page where item location is
+     ----------------------------------------------
+         | s | p |  d |
+     ----------------------------------------------
+

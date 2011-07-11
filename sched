@@ -1,0 +1,43 @@
+date    unit  topic                                   project             notes
+-------------------------------------------------------------------------------
+09/09   01    intro to OS                             project 1 (unix)
+09/16   02    process concepts                        presentation topic
+09/23   03    thread concepts & concurrency           --------------
+09/30   04    deadlock & indefinite postponement      DUE: project 1
+10/07   --    exam 1   -----------------------------  --------------
+10/14   05    real storage                            project 2 (unix)
+                                                      start paper
+10/21   06    virtual storage organization            DUE: project 2
+                                                      DUE: paper topic
+10/28   07    virtual storage management              --------------
+10/04   --    exam 2   -----------------------------  --------------
+11/11   08    disk performance optimzation            project 3 (unix)
+11/18   09    file and database systems               DUE: project 3
+12/02   10    networking & distributed computing      project 4 (unix)
+                                                      DUE: translator
+12/09   11    web services                            DUE: project 4
+                                                      project 5 (unix)
+12/16   12    security                                DUE: project 5
+12/21   --    exam 3   -----------------------------  --------------
+
+
+
+                               2010                               
+
+        July                  August                September     
+Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa
+             1  2  3    1  2  3  4  5  6  7             1  2  3  4
+ 4  5  6  7  8  9 10    8  9 10 11 12 13 14    5  6  7  8  9 10 11
+11 12 13 14 15 16 17   15 16 17 18 19 20 21   12 13 14 15 16 17 18
+18 19 20 21 22 23 24   22 23 24 25 26 27 28   19 20 21 22 23 24 25
+25 26 27 28 29 30 31   29 30 31               26 27 28 29 30
+
+       October               November               December      
+Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa   Su Mo Tu We Th Fr Sa
+                1  2       1  2  3  4  5  6             1  2  3  4
+ 3  4  5  6  7  8  9    7  8  9 10 11 12 13    5  6  7  8  9 10 11
+10 11 12 13 14 15 16   14 15 16 17 18 19 20   12 13 14 15 16 17 18
+17 18 19 20 21 22 23   21 22 23 24 25 26 27   19 20 21 22 23 24 25
+24 25 26 27 28 29 30   28 29 30               26 27 28 29 30 31
+31
+------------------------------------------------------------------

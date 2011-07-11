@@ -1,0 +1,2 @@
+Change all of the files in the North structure read only, in the South
+structure to hidden, and in both East and West to copy inhibit.

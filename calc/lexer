@@ -1,0 +1,68 @@
+#!/usr/bin/python
+"""
+bol
+"""
+
+import sys
+
+#exit codes
+EC_QUIT = 2
+EC_MATH = 3
+
+# P.E.M.D.A.S.
+tokens = dict(
+        pl='('
+        pr=')'
+        e='^'
+        m='*'
+        d='/'
+        a='+'
+        s='-'
+        )
+
+equate = []
+
+def main():
+    """Get the latest data and pass to local method
+
+    Parse data in a loop and break on first full run, if not being called
+    interactively, otherwise continutally prompt the user to continue and print
+    out the results.
+    """
+    pl_found = False
+    try:
+      #getData(answer)
+        #TODO: `if` here - only when interactive
+        # if not interactive
+        #     ret = answer
+        #     break
+        # else:
+        #     printf answer
+        equation = input("calculate: ") if sys.stdin.isatty() else input()
+        for token in tokens:
+            continue if token not in equation
+            i=0
+            for c in equation if c in tokens:
+                if c in pl && !pl_found:
+                    pl_found = True
+                    n=i
+                    for nc in equation[i:]:
+                        if nc == pr:
+                            equation = equation[i:n+1]
+                            raise ReParse(equate)
+                            pl_found = False
+                        ++n
+                if (pl_found):
+                    raise UnMatchedParenthesis
+                ++i
+    except CalculationError:
+        sys.exit(EC_MATH)
+    except CancelledError:
+        sys.exit(EC_QUIT)
+    finally:
+        pass
+        # i iz in y0ur codez
+
+    calc(equate)
+
+main()

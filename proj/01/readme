@@ -1,0 +1,6 @@
+Using the account that your instructor assigned to you create a structure that
+will have 4 Regions (North, South, East, West) and 4 Departments in each Region
+(Sales, Accounting, Inventory and Manufacturing) and 4 people in each
+department (Names up to you). Using vi create a text file that you can
+propagate though all of the people directories. Print out the structure and
+file status.

@@ -1,0 +1,100 @@
+#!/bin/bash
+
+proj2=
+verb=
+dbg=
+run=1  #put something here to enable this script
+rgs=(north south east west)
+dps=(sales accounting inventory manufacturing)
+proof=$#
+dir_pre=$1
+dir=${dir:-$PWD}
+
+#############################################
+
+die() {
+  echo ${@} >&2
+  exit 1
+}
+
+mk() {
+  [[ $run ]] || return 0
+  mkdir ${@}
+}
+
+verbose() {
+  [[ $verb ]] || return 0
+  echo ${@}
+}
+
+debug() {
+  [[ $dbg ]] || return 0
+  echo ${@}
+}
+
+makemess() {
+  if [[ $(echo $dir_pre | head -c 1) != "-" ]]; then
+    echo -e "where would you like to make a mess?
+    if in this directory, just hit [enter]: "
+    read dir
+  else
+    dir=$(echo $dir_pre | sed -e 's|-||')
+  fi
+  dir=${dir:-$PWD}
+  mk -p ${dir} 2> /dev/null || die "failed to create directory. maybe it already exist?"
+}
+
+[[ $run ]] || verbose "NOTE: _NOT_ creating anything this run. Just TESTING."
+
+log="${dir}/shell.log"
+echo '' > $log
+
+proveit() {
+  (( $proof > 1 )) && for person in $(cat $log); do ls -la $person; done
+}
+
+makemess
+
+echo -e "Who are you hiring to hang out here?
+enter one name per line and hit [enter]: "
+read emp[0]
+read emp[1]
+read emp[2]
+read emp[3]
+
+for r in "${rgs[@]}"; do
+  path="${dir}/${rgs[r]}"
+  verbose -e "... making region, '${r}': ${path}\n"
+  mk -p $path
+  for d in "${dps[@]}"; do
+    path="${dir}/${r}/${d}"
+    verbose -e "   ... making department, '${d}': ${path}\n"
+    mk -p ${path}
+
+    for e in "${emp[@]}"; do
+      verbose -e "      ... hiring new employee, '${e}', in '${d}'\n"
+      debug -e "      debug: [quietly writing employee info to log file]" #debug
+      path="${dir}/${r}/${d}/${e}"
+      mk -p ${path}
+      [[ $run ]] && echo -e "${path}" >> ${log}
+    done
+  done
+done
+
+[[ $dbg ]] && less ${log} #debug
+proveit
+
+#project 2
+# don't care enough to _not_ hardcode project 2
+proj2=1
+dbg=1
+f_readonly='north'
+f_hidden='south'
+f_copyinh_1='east'
+f_copyinh_2='west'
+if [[ $proj2 ]]; then
+  chmod -R 444 ${dir}${f_readonly}
+  mv -v ${dir}/${f_readonly} ${dir}/.${f_hidden}
+  chmod -R 333 ${dir}/${f_copyinh_1}
+  chmod -R 333 ${dir}/${f_copyinh_2}
+fi
